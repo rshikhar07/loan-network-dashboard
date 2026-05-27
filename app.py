@@ -2,7 +2,15 @@ import pandas as pd
 from sqlalchemy import create_engine
 
 import os
+import streamlit as st
 
+PASSWORD = "loan123"
+
+password = st.text_input("Enter Password", type="password")
+
+if password != PASSWORD:
+    st.stop()
+    
 DB_USER = os.getenv("DB_USER")
 DB_PASSWORD = os.getenv("DB_PASSWORD")
 DB_HOST = os.getenv("DB_HOST")
