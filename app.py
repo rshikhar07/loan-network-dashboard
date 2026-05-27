@@ -1,12 +1,13 @@
 import pandas as pd
 from sqlalchemy import create_engine
 
-# PostgreSQL credentials
-DB_USER = "postgres"
-DB_PASSWORD = "lnetwork"
-DB_HOST = "ln-staging-db.ct2tjzwfwznn.ap-south-1.rds.amazonaws.com"
-DB_PORT = "5432"
-DB_NAME = "loannetwork_production"
+import os
+
+DB_USER = os.getenv("DB_USER")
+DB_PASSWORD = os.getenv("DB_PASSWORD")
+DB_HOST = os.getenv("DB_HOST")
+DB_PORT = os.getenv("DB_PORT")
+DB_NAME = os.getenv("DB_NAME")
 
 # Connection
 engine = create_engine(
