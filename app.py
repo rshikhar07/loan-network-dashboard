@@ -1,3 +1,4 @@
+import os
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
@@ -272,18 +273,24 @@ Loan Network Team</p>
 </div>
 """
 
-receiver_email = st.text_input("Receiver Email")
-if st.button("Send Email"):
-
-    send_email(
-        receiver_email,
-        "Secured Case Details",
-        html_template
-    )
-
-    st.success("Email Sent Successfully")
 
 st.markdown(html_template, unsafe_allow_html=True)
+
+receiver_email = st.text_input("Receiver Email")
+
+if st.button("Send Email"):
+
+    if receiver_email == "":
+        st.error("Please Enter Receiver Email")
+
+    else:
+        send_email(
+            receiver_email,
+            "Secured Case Details",
+            html_template
+        )
+
+        st.success("Email Sent Successfully")
 
 st.subheader("HTML Email Code")
 
