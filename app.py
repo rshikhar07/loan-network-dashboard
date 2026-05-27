@@ -1,8 +1,13 @@
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+
 import pandas as pd
 from sqlalchemy import create_engine
-
-import os
 import streamlit as st
+
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 
 APP_PASSWORD = st.secrets["APP_PASSWORD"]
 
@@ -17,6 +22,29 @@ DB_PASSWORD = os.getenv("DB_PASSWORD")
 DB_HOST = os.getenv("DB_HOST")
 DB_PORT = os.getenv("DB_PORT")
 DB_NAME = os.getenv("DB_NAME")
+
+def send_email(receiver_email, subject, html_content):
+
+    sender_email = st.secrets["SENDER_EMAIL"]
+    sender_password = st.secrets["SENDER_PASSWORD"]
+
+    msg = MIMEMultipart()
+
+    msg["From"] = sender_email
+    msg["To"] = receiver_email
+    msg["Subject"] = subject
+
+    msg.attach(MIMEText(html_content, "html"))
+
+    server = smtplib.SMTP("smtp.gmail.com", 587)
+
+    server.starttls()
+
+    server.login(sender_email, sender_password)
+
+    server.send_message(msg)
+
+    server.quit()
 
 # Connection
 engine = create_engine(
@@ -243,6 +271,17 @@ Loan Network Team</p>
 
 </div>
 """
+
+receiver_email = st.text_input("Receiver Email")
+if st.button("Send Email"):
+
+    send_email(
+        receiver_email,
+        "Secured Case Details",
+        html_template
+    )
+
+    st.success("Email Sent Successfully")
 
 st.markdown(html_template, unsafe_allow_html=True)
 
